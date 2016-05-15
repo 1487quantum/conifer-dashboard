@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Conifer - Dashboard</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/materialize.min.css" rel="stylesheet">
+
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper green darken-1">
+        <p class="brand-logo center"><span aria-hidden="true" class="glyphicon glyphicon-tree-conifer"></span> Conifer</p>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><span aria-hidden="true" class="glyphicon glyphicon-menu-hamburger"></span></a>
+        <ul class="right hide-on-med-and-down mnu">
+          <li class="active "><a href="#">Dashboard</a></li>
+          <li><a href="#about">Settings</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          <li class="active"><a href="#">Dashboard</a></li>
+          <li><a href="#about">Settings</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+
+  <div class="container">
+      <!-- FIRST ROW OF BLOCKS -->
+      <div class="row">
+        <div class="col s12 m4" >
+          <div class="card white" >
+            <div class="card-content">
+              <span class="card-title">Status</span>
+              <p>Status of the robot</p>
+            </div>
+            <div class="card-action">
+              <p class="lead">ROS Network: <span id="rosnet">-</span></p>
+              <p class="lead">Vehicle: <span id="vehc">Idle</span></p>
+              <p class="lead">Joystick: <span id="joys">Disconnected</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="card white">
+            <div class="card-content">
+              <span class="card-title">Speed</span>
+            </div>
+            <div class="card-action">
+              <p>speed doughnut here!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="card white">
+            <div class="card-content">
+              <span class="card-title">Camera</span>
+            </div>
+            <div id="cam" style="height: 600"></div>
+
+          </div>
+        </div>
+
+      </div><!-- /row 1-->
+
+    <!-- Second ROW OF BLOCKS -->
+    <div class="row">
+        <div class="card white">
+          <div class="card-content">
+
+
+            <span class="card-title">Map</span>
+            <div class="card-action">
+              <div class="row">
+                  <div class="col s12 m10">
+            <div id="navm">
+            </div>
+          </div>
+            <div class="col s12 m2">
+                <button class="waves-effect waves-light btn white-text" style="margin-bottom: 1em; width: 100%"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span> Zoom In</button>
+                <button class="waves-effect waves-light btn  white-text" style="margin-bottom: 1em; width: 100%"><span aria-hidden="true" class="glyphicon glyphicon-minus"></span> Zoom Out</Button>
+                </div>
+            </div>
+          </div>
+
+          </div>
+        </div>
+
+      </div><!-- /row 2 -->
+
+      <!-- 3rd ROW OF BLOCKS -->
+      <div class="row">
+        <div class="col s12 m8">
+          <div class="card white">
+            <div class="card-content">
+              <span class="card-title">Console</span>
+            </div>
+            <div class="card-action">
+              <textarea id="consl" width="100%" height="10em" disabled></textarea>
+              <div class="row">
+                <div class="input-field col s10">
+                  <input placeholder="Command" type="text" class="validate">
+                </div>
+                <div class="input-field col s1">
+                  <button class="waves-effect waves-light btn white-text">></Button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /row 3 -->
+      </div>
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- ROS Stuff -->
+    <script src="js/easeljs.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/roslib.js"></script>
+    <!-- Map & Nav -->
+    <script src="js/ros2d.js"></script>
+    <script src="js/nav2d.min.js"></script>
+    <script src="js/mapdisp.js"></script>
+    <!-- Camera -->
+    <script src="js/mjpegcanvas.min.js"></script>
+    <script src="js/cam.js"></script>
+
+    <!-- Materialize Theme -->
+    <script src="js/materialize.min.js"></script>
+
+
+
+  </body>
+  </html>

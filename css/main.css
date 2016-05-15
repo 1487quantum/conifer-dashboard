@@ -1,0 +1,33 @@
+
+html {
+  font-family: 'Open Sans', sans-serif;
+}
+
+textarea {
+  resize: vertical; /* user can resize vertically, but width is fixed */
+}
+
+.mnu{
+  margin-right: 20em;
+}
+
+.ico{
+  vertical-align: middle;
+  font-size: 35px;
+}
+
+#navm {
+  -webkit-transform-origin: 35% 35%;
+  -moz-transform-origin: 35% 35%;
+  -o-transform-origin: 35% 35%;
+  transform-origin: 35% 35%;
+
+  width: 850px;
+  height: 450px;
+
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
