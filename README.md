@@ -1,2 +1,2 @@
 # fyp-conifer-dashboard
-The dashboard for the autnomous vehicle
+A web-based dashboard for the autonomous vehicle
