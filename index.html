@@ -26,6 +26,7 @@
 </head>
 
 <body>
+  <!--Navbar-->
   <div class="navbar-fixed">
     <nav>
       <div class="nav-wrapper green darken-1">
@@ -43,7 +44,6 @@
     </nav>
   </div>
 
-
   <div class="container">
       <!-- FIRST ROW OF BLOCKS -->
       <div class="row">
@@ -51,12 +51,9 @@
           <div class="card white" >
             <div class="card-content">
               <span class="card-title">Status</span>
-              <p>Status of the robot</p>
             </div>
             <div class="card-action">
-              <p class="lead">ROS Network: <span id="rosnet">-</span></p>
-              <p class="lead">Vehicle: <span id="vehc">Idle</span></p>
-              <p class="lead">Joystick: <span id="joys">Disconnected</span></p>
+              <p>ROS Network: <span id="rosnet">-</span></p>
             </div>
           </div>
         </div>
@@ -64,10 +61,12 @@
         <div class="col s12 m4">
           <div class="card white">
             <div class="card-content">
-              <span class="card-title">Speed</span>
+              <span class="card-title">Telemetry</span>
             </div>
             <div class="card-action">
-              <p>speed doughnut here!</p>
+              <p>Speed (m/s): <span id="spd">-</span></p>
+              <p>Distance to goal (m): <span id="dist">-</span></p>
+
             </div>
           </div>
         </div>
@@ -117,13 +116,13 @@
               <span class="card-title">Console</span>
             </div>
             <div class="card-action">
-              <textarea id="consl" width="100%" height="10em" disabled></textarea>
+              <textarea id="consl" rows="5" width="100%" readonly="true"></textarea>
               <div class="row">
                 <div class="input-field col s10">
-                  <input placeholder="Command" type="text" class="validate">
+                  <input id="txtIn" placeholder="Command" type="text" class="validate">
                 </div>
                 <div class="input-field col s1">
-                  <button class="waves-effect waves-light btn white-text">Go</button>
+                  <button class="waves-effect waves-light btn white-text" onclick="runCmd()">Go</button>
                   </div>
 
                 </div>
@@ -135,28 +134,24 @@
     </div><!-- /.container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- ROS Stuff -->
-    <script src="js/easeljs.js"></script>
-    <script src="js/eventemitter2.min.js"></script>
-    <script src="js/roslib.js"></script>
-    <!-- Map & Nav -->
-    <script src="js/ros2d.js"></script>
-    <script src="js/nav2d.min.js"></script>
-    <script src="js/mapdisp.js"></script>
-    <!-- Camera -->
+  <!--Scripts-->
+  <script src="js/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- ROS Stuff -->
+  <script src="js/eventemitter2.min.js"></script>
+  <script src="js/roslib.js"></script>
+
+  <script src="js/ros_stats.js"></script>
+  <script src="js/console.js"></script>
+
+  <!-- Camera -->
     <script src="js/mjpegcanvas.min.js"></script>
     <script src="js/cam.js"></script>
 
     <!-- Materialize Theme -->
     <script src="js/materialize.min.js"></script>
 
-
-
-  </body>
-  </html>
+</body>
+</html>
