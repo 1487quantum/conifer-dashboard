@@ -1,6 +1,5 @@
 #!/bin/bash
 # Start server script
-
 echo "Starting ROSbridge"
 gnome-terminal -x roslaunch rosbridge_server rosbridge_websocket.launch
 sleep 2 #Give rosbridge 2s to start
