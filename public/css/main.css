@@ -29,17 +29,14 @@ textarea {
   padding-top: 70px;
 }
 
-.constyle {
-  background-color: #fff;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  margin-bottom: 10px;
+.constyle{
+  font-size: 16px;
 }
 
 .constyle .title {
   border-bottom: 1px solid #d7d7d7;
   font-size: 22px;
-  padding: 7px 10px 4px;
+  padding: 7px 10px 7px 10px;
 }
 
 .constyle .content {
