@@ -8,13 +8,15 @@ textarea {
 }
 
 .mnu{
-  margin-right: 20em;
+  margin-right: 10em;
 }
 
 .ico{
   vertical-align: middle;
   font-size: 35px;
 }
+
+
 
 #navm {
   -webkit-transform-origin: 35% 35%;
