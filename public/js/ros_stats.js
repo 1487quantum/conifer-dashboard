@@ -81,10 +81,10 @@ ros.on('connection', function() {
   var tGoal = new ROSLIB.Topic({
     ros : ros,
     name : '/tgoal',
-    messageType : 'std_msgs/Int8'
+    messageType : 'std_msgs/Float64'
   });
 
   tGoal.subscribe(function(message) {
     console.log('Received distance to goal on ' + tGoal.name + ': %i',message.data);
-    vgoal.innerHTML = parseInt(message.data);
+    vgoal.innerHTML = parseFloat(message.data).toFixed(2);
   });
