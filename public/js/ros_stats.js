@@ -88,3 +88,21 @@ ros.on('connection', function() {
     console.log('Received distance to goal on ' + tGoal.name + ': %i',message.data);
     vgoal.innerHTML = parseFloat(message.data).toFixed(2);
   });
+
+  // Create the main viewer.
+  var viewer = new ROS2D.Viewer({
+    divID : 'navm',
+    width : 450,
+    height : 850
+  });
+
+  // Setup the nav client.
+    var nav = NAV2D.OccupancyGridClientNav({
+      ros : ros,
+      rootObject : viewer.scene,
+      viewer : viewer,
+      serverName : '/map'
+    });
+
+    var ctx = nv.getContext("2d");
+    ctx.rotate(90*Math.PI/180);
