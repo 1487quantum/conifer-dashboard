@@ -104,5 +104,5 @@ ros.on('connection', function() {
       serverName : '/map'
     });
 
-    var ctx = nv.getContext("2d");
-    ctx.rotate(90*Math.PI/180);
+    //var ctx = nv.getContext("2d");
+    //ctx.rotate(90*Math.PI/180);
