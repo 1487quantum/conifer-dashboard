@@ -50,26 +50,36 @@
 
     <!-- FIRST ROW OF BLOCKS -->
     <div class="row">
-      <div class="col-sm-6 constyle">
+      <div class="col-sm-8 constyle">
         <div class="card white">
-        <div class="title">Telemetry</div>
-        <div class="content">
-          <p>Speed (m/s): <span id="spd">-</span></p>
-          <p>Distance to goal (m): <span id="dist">-</span></p>
-        </div>
-      </div>
-      </div>
-      <!--Camera-->
-      <div class="col-sm-6 constyle">
-        <div class="card white">
-        <div class="title">Camera</div>
-        <div class="content">
-          <div class="embed-responsive embed-responsive-4by3">
-            <iframe class="embed-responsive-item" src="http://192.168.2.105/mjpg/video.mjpg?fps=30&amp;compression=10"></iframe>
+          <div class="title">Telemetry</div>
+          <div class="content">
+            <div class="row">
+              <!--Speed-->
+              <div class="col-sm-6 center" id="div-speed">
+                <h2><span id="spd">-</span></h2>
+                <p>Speed (m/s)</p>
+              </div>
+              <!--Goal-->
+              <div class="col-sm-6 center" id="div-goal">
+                <h2><span id="dist">-</span></h2>
+                <p>Distance to goal (m)</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <!--Camera-->
+      <div class="col-sm-4 constyle">
+        <div class="card white">
+          <div class="title">Camera</div>
+          <div class="content">
+            <div class="embed-responsive embed-responsive-4by3">
+              <iframe class="embed-responsive-item" src="http://192.168.2.105/mjpg/video.mjpg?fps=30&amp;compression=10"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     </div>
