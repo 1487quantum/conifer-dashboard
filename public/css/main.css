@@ -3,8 +3,13 @@ html {
   font-family: 'Open Sans', sans-serif;
 }
 
+body{
+  background-color: #D0D0D0;
+}
+
 textarea {
   resize: vertical; /* user can resize vertically, but width is fixed */
+   height: 4em;
 }
 
 .mnu{
@@ -16,20 +21,26 @@ textarea {
   font-size: 35px;
 }
 
+.nav-logo{
+  vertical-align: middle;
+  font-size: 25px;
+}
 
+.body-off {
+  padding-top: 70px;
+}
 
-#navm {
-  -webkit-transform-origin: 35% 35%;
-  -moz-transform-origin: 35% 35%;
-  -o-transform-origin: 35% 35%;
-  transform-origin: 35% 35%;
+.constyle{
+  font-size: 16px;
+}
 
-  width: 850px;
-  height: 450px;
+.constyle .title {
+  border-bottom: 1px solid #d7d7d7;
+  font-size: 22px;
+  padding: 7px 10px 7px 10px  ;
+}
 
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  -ms-transform: rotate(270deg);
-  transform: rotate(270deg);
+.constyle .content {
+  font-size: 18px;
+  padding: 7px 10px 4px;
 }
