@@ -88,61 +88,58 @@
 
     <!-- Second ROW OF BLOCKS -->
     <div class="row">
-    <div class="col-sm-10 constyle">
-      <div class="card white">
-        <div class="title">Map</div>
-        <div class="content">
-          <p>Map</p>
-          <div id="navm"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- /row 2 -->
-
-    <!-- 3rd ROW OF BLOCKS -->
-    <div class="row">
-      <div class="col s12 m8">
+      <div class="col-sm-6 constyle">
         <div class="card white">
-          <div class="card-content">
-            <span class="card-title">Console</span>
-          </div>
-          <div class="card-action">
-            <textarea id="consl" rows="5" width="100%" readonly="true"></textarea>
-            <div class="row">
-              <div class="input-field col s10">
-                <input id="txtIn" placeholder="Command" type="text" class="validate">
-              </div>
-              <div class="input-field col s1">
-                <button class="waves-effect waves-light btn white-text" onclick="runCmd()">Go</button>
-              </div>
-
-            </div>
+          <div class="title">Map</div>
+          <div class="content">
+            <div id="navm"></div>
           </div>
         </div>
       </div>
 
-    </div><!-- /row 3 -->
-  </div><!-- /.container -->
+      <div class="col-sm-6 constyle">
+        <div class="card white">
+          <div class="title">Log  </div>
+
+          <div class="content">
+            <textarea id="consl" width="100%" readonly="true"></textarea>
+            <!-- Future implementation
+            <div class="row">
+            <div class="input-field col s10">
+            <input id="txtIn" placeholder="Command" type="text" class="validate">
+          </div>
+          <div class="input-field col s1">
+          <button class="waves-effect waves-light btn white-text" onclick="runCmd()">Go</button>
+        </div>
+
+      </div>
+    -->
+  </div>
+</div>
+</div>
+</div>
+<!-- /row 2 -->
+
+</div>
+<!-- /.container -->
 
 
-  <!--Scripts-->
-  <script src="js/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-  <script src="js/bootstrap.min.js"></script>
+<!--Scripts-->
+<script src="js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
 
-  <!-- ROS Stuff -->
-  <script src="js/eventemitter2.min.js"></script>
-  <script src="js/roslib.js"></script>
+<!-- ROS Stuff -->
+<script src="js/eventemitter2.min.js"></script>
+<script src="js/roslib.js"></script>
 
-  <script src="js/ros_stats.js"></script>
-  <script src="js/console.js"></script>
+<script src="js/ros_stats.js"></script>
+<script src="js/console.js"></script>
 
 
 
-  <!-- Materialize Theme -->
-  <script src="js/materialize.min.js"></script>
+<!-- Materialize Theme -->
+<script src="js/materialize.min.js"></script>
 
 </body>
 </html>

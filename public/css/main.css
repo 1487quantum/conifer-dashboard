@@ -9,6 +9,7 @@ body{
 
 textarea {
   resize: vertical; /* user can resize vertically, but width is fixed */
+   height: 4em;
 }
 
 .mnu{
