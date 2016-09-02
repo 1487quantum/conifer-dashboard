@@ -67,12 +67,12 @@ ros.on('connection', function() {
   //Speed
   var tSpd = new ROSLIB.Topic({
     ros : ros,
-    name : '/speed',
-    messageType : 'std_msgs/Int8'
+    name : '/cmd_vel',
+    messageType : 'geometry_msgs/Twist'
   });
 
   tSpd.subscribe(function(message) {
-    console.log('Received speed on ' + tSpd.name + ': %i',message.data);
+    console.log('Received speed on ' + tSpd.name + ': ',message.data);
     vspd.innerHTML = parseInt(message.data);
     //tSpd.unsubscribe();
   });
