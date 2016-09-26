@@ -67,13 +67,13 @@ ros.on('connection', function() {
   //Speed
   var tSpd = new ROSLIB.Topic({
     ros : ros,
-    name : '/cmd_vel',
-    messageType : 'geometry_msgs/Twist'
+    name : '/speed',
+    messageType : 'std_msgs/Float64'
   });
 
   tSpd.subscribe(function(message) {
-    console.log('Received speed on ' + tSpd.name + ': ',message.data);
-    vspd.innerHTML = parseInt(message.data);
+    console.log('Received speed ' + tSpd.name + ': %i',message.data);
+    vspd.innerHTML = parseFloat(message.data).toFixed(2);
     //tSpd.unsubscribe();
   });
 
@@ -87,6 +87,8 @@ ros.on('connection', function() {
   tGoal.subscribe(function(message) {
     console.log('Received distance to goal on ' + tGoal.name + ': %i',message.data);
     vgoal.innerHTML = parseFloat(message.data).toFixed(2);
+
+
   });
 
   // Create the main viewer.
@@ -104,5 +106,61 @@ ros.on('connection', function() {
       serverName : '/map'
     });
 
+
+
+  function myFunction() {
+    var d = new Date();
+    var n = d.toLocaleTimeString();
+      document.getElementById("eStop").innerHTML = "Emergency brake activated at "+n;
+      var cmdVel = new ROSLIB.Topic({
+        ros : ros,
+        name : '/stop_vel',
+        messageType : 'geometry_msgs/Twist'
+      });
+
+      var eBrake = new ROSLIB.Topic({
+        ros : ros,
+        name : '/pause_navigation',
+        messageType : 'std_msgs/Bool'
+      });
+
+      var msg = new ROSLIB.Message({
+      data: true
+      });
+
+      var twist = new ROSLIB.Message({
+        linear : {
+          x : 0.0,
+          y : 0.0,
+          z : 0.0
+        },
+        angular : {
+          x : 0.0,
+          y : 0.0,
+          z : 0.0
+        }
+      });
+      cmdVel.publish(twist);
+      eBrake.publish(msg);
+
+    }d
+    function myFunction2() {
+      var d = new Date();
+      var n = d.toLocaleTimeString();
+      document.getElementById("resume").innerHTML = "Resumed at "+n;
+
+        var eBrake = new ROSLIB.Topic({
+          ros : ros,
+          name : '/pause_navigation',
+          messageType : 'std_msgs/Bool'
+        });
+
+        var msg = new ROSLIB.Message({
+        data: false
+        });
+
+        eBrake.publish(msg);
+
+      }
     //var ctx = nv.getContext("2d");
     //ctx.rotate(90*Math.PI/180);
