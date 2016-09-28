@@ -11,6 +11,7 @@ var pageType = document.getElementById('wType');
 var logTxt = document.getElementById('consl');
 
 //Buttons
+var btnRoute = document.getElementById("txtRoute");
 var btnBrakes = document.getElementById("btnBrakes");
 var btnRes = document.getElementById("btnRes");
 
@@ -94,6 +95,21 @@ if(wType==0){
   });
 
   //Publishers
+
+  //Set route
+  function goToRoute(rt){
+    var routePub = new ROSLIB.Topic({
+      ros : ros,
+      name : '/route',
+      messageType : 'std_msgs/Int32'
+    });
+
+    var routeNum = new ROSLIB.Message({
+      data: rt
+    });
+    routePub.publish(routeNum);
+  }
+
   //Emergency Brake
   function btnEBrake() {
     d = new Date();
@@ -203,10 +219,28 @@ function logStat(stat){
   d = new Date();
   n = d.toLocaleTimeString();
   logTxt.value +="["+n+"] "+stat;
+logTxt.scrollTop = logTxt.scrollHeight;
 }
 
 //Button States
 function btnDisabled(btnB, btnR){
   btnBrakes.disabled = btnB;
   btnRes.disabled = btnR;
+}
+
+//Update spinner/dropdown box
+function dropdown(val) {
+btnRoute.innerHTML = val;
+logStat("Selected route ->"+val+"\n");
+}
+
+function startRoute(){
+  var route = btnRoute.innerHTML;
+  if(route=="Route 1"){
+      goToRoute(1);
+  }else if(route=="Route 2"){
+      goToRoute(2);
+  }
+  logStat("Navigating to "+route+"\n");
+
 }
