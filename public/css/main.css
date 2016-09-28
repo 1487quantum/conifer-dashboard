@@ -45,6 +45,10 @@ textarea {
   padding: 7px 10px 4px;
 }
 
+.constyle textarea{
+  height: 130px;
+}
+
 .videoWrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
