@@ -1,76 +1,81 @@
 
-// Connect to ROS.
-var ros = new ROSLIB.Ros({
-  url : 'ws://localhost:9090'
-});
-
+//Network stats
 var el = document.getElementById('rosnet');
+//Telemetry
 var vspd = document.getElementById('spd');
 var vgoal = document.getElementById('dist');
+//Dashboard type
+var pageType = document.getElementById('wType');
 
+//Textarea
+var logTxt = document.getElementById('consl');
 
+//Buttons
+var btnBrakes = document.getElementById("btnBrakes");
+var btnRes = document.getElementById("btnRes");
 
-ros.on('connection', function() {
-   console.log('Connected to websocket server.');
-            el.style.color = "white";
-            el.style.background = "green";
-            el.style.padding = "5px";
-            el.innerHTML = 'Online';
+//Date time var
+var d = new Date();
+var n = d.toLocaleTimeString();
 
- });
+//
+var stat = 0; //States: 0-> Offline, 1-> Online, 2->Error
+var wType = 0; //Web dashboard type: 0-> Server, 1-> Client
+var cStats;   //Connection stats
 
- ros.on('error', function(error) {
-   console.log('Error connecting to websocket server: ', error);
-   el.style.color = "white";
-   el.style.background = "red";
-   el.style.padding = "5px";
-   el.innerHTML = 'Error';
+if(pageType.innerHTML=="Client"){
+  wType=1;
+}else{
+  wType=0;
+}
 
- });
-
- ros.on('close', function() {
-   console.log('Connection to websocket server closed.');
-   el.style.color = "white";
-   el.style.background = "Orange";
-   el.style.padding = "5px";
-   el.innerHTML = 'Offline';
-
- });
-
- // Publishing a Topic
-  /* ------------------
-
-  var cmdVel = new ROSLIB.Topic({
-    ros : ros,
-    name : '/cmd_vel',
-    messageType : 'geometry_msgs/Twist'
+//Server mode
+if(wType==0){
+  // Connect to ROS.
+  //Connection status
+  var ros = new ROSLIB.Ros({
+    url : 'ws://localhost:9090'
   });
 
-  var twist = new ROSLIB.Message({
-    linear : {
-      x : 0.1,
-      y : 0.2,
-      z : 0.3
-    },
-    angular : {
-      x : -0.1,
-      y : -0.2,
-      z : -0.3
-    }
-  });
-  cmdVel.publish(twist);
+  ros.on('connection', function() {
+    cStats = 'Connected to websocket server.\n'
+    console.log(cStats);
+    logStat(cStats);
 
-*/
+    //Enable brake buttons
+    btnDisabled(false,true);
+
+    stat = 1;
+  });
+
+  ros.on('error', function(error) {
+    cStats='Error connecting to websocket server.\n';
+    console.log(cStats,error);
+    logStat(cStats);
+
+    //Disable all buttons
+    btnDisabled(true,true);
+
+    stat = 2;
+  });
+
+  ros.on('close', function() {
+    cStats='Connection to websocket server closed.\n';
+    console.log(cStats);
+    logStat(cStats);
+
+    //Disable all buttons
+    btnDisabled(true,true);
+    stat = 0;
+  });
 
   // Subscribers
-
   //Speed
   var tSpd = new ROSLIB.Topic({
     ros : ros,
     name : '/speed',
     messageType : 'std_msgs/Float64'
   });
-
   tSpd.subscribe(function(message) {
     console.log('Received speed ' + tSpd.name + ': %i',message.data);
     vspd.innerHTML = parseFloat(message.data).toFixed(2);
@@ -83,84 +88,125 @@ ros.on('connection', function() {
     name : '/tgoal',
     messageType : 'std_msgs/Float64'
   });
-
   tGoal.subscribe(function(message) {
     console.log('Received distance to goal on ' + tGoal.name + ': %i',message.data);
     vgoal.innerHTML = parseFloat(message.data).toFixed(2);
-
-
   });
 
-  // Create the main viewer.
-  var viewer = new ROS2D.Viewer({
-    divID : 'navm',
-    width : 450,
-    height : 850
-  });
+  //Publishers
+  //Emergency Brake
+  function btnEBrake() {
+    d = new Date();
+    n = d.toLocaleTimeString();
+    //Shows time activated
+    logStat("Emergency brake activated.\n");
 
-  // Setup the nav client.
-    var nav = NAV2D.OccupancyGridClientNav({
+    //Disable current btn & Enable btn Resume
+    btnDisabled(true,false);
+
+    var cmdVel = new ROSLIB.Topic({
       ros : ros,
-      rootObject : viewer.scene,
-      viewer : viewer,
-      serverName : '/map'
+      name : '/stop_vel',
+      messageType : 'geometry_msgs/Twist'
     });
 
+    var eBrake = new ROSLIB.Topic({
+      ros : ros,
+      name : '/pause_navigation',
+      messageType : 'std_msgs/Bool'
+    });
 
-
-  function myFunction() {
-    var d = new Date();
-    var n = d.toLocaleTimeString();
-      document.getElementById("eStop").innerHTML = "Emergency brake activated at "+n;
-      var cmdVel = new ROSLIB.Topic({
-        ros : ros,
-        name : '/stop_vel',
-        messageType : 'geometry_msgs/Twist'
-      });
-
-      var eBrake = new ROSLIB.Topic({
-        ros : ros,
-        name : '/pause_navigation',
-        messageType : 'std_msgs/Bool'
-      });
-
-      var msg = new ROSLIB.Message({
+    var msg = new ROSLIB.Message({
       data: true
-      });
+    });
 
-      var twist = new ROSLIB.Message({
-        linear : {
-          x : 0.0,
-          y : 0.0,
-          z : 0.0
-        },
-        angular : {
-          x : 0.0,
-          y : 0.0,
-          z : 0.0
-        }
-      });
-      cmdVel.publish(twist);
-      eBrake.publish(msg);
-
-    }d
-    function myFunction2() {
-      var d = new Date();
-      var n = d.toLocaleTimeString();
-      document.getElementById("resume").innerHTML = "Resumed at "+n;
-
-        var eBrake = new ROSLIB.Topic({
-          ros : ros,
-          name : '/pause_navigation',
-          messageType : 'std_msgs/Bool'
-        });
-
-        var msg = new ROSLIB.Message({
-        data: false
-        });
-
-        eBrake.publish(msg);
-
+    var twist = new ROSLIB.Message({
+      linear : {
+        x : 0.0,
+        y : 0.0,
+        z : 0.0
+      },
+      angular : {
+        x : 0.0,
+        y : 0.0,
+        z : 0.0
       }
-    //var ctx = nv.getContext("2d");
-    //ctx.rotate(90*Math.PI/180);
+    });
+    cmdVel.publish(twist);
+    eBrake.publish(msg);
+  }
+
+  //Resume
+  function btnResume() {
+    logStat("Route resumed.\n");
+
+    //Disable current btn & Enable btn brakes
+    btnDisabled(false,true);
+
+    var eBrake = new ROSLIB.Topic({
+      ros : ros,
+      name : '/pause_navigation',
+      messageType : 'std_msgs/Bool'
+    });
+
+    var msg = new ROSLIB.Message({
+      data: false
+    });
+
+    eBrake.publish(msg);
+
+  }
+}
+
+function updateNetStat(clr, bg, pad, txt){
+  el.style.color = clr;
+  el.style.background = bg;
+  el.style.padding = pad;
+  el.innerHTML = txt;
+}
+
+if(stat==0){
+  updateNetStat("white","orange","5px",'Offline');
+}else if(stat==1){
+  updateNetStat("white","green","5px",'Online');
+}else{
+  updateNetStat("white","red","5px",'Error');
+}
+
+
+// Create the main viewer.
+var viewer = new ROS2D.Viewer({
+  divID : 'navm',
+  width : 450,
+  height : 850
+});
+
+// Setup the nav client.
+var nav = NAV2D.OccupancyGridClientNav({
+  ros : ros,
+  rootObject : viewer.scene,
+  viewer : viewer,
+  serverName : '/map'
+});
+
+//var ctx = nv.getContext("2d");
+//ctx.rotate(90*Math.PI/180);
+
+//Run fx when page is loaded
+function bodyOnLoad(){
+logStat(pageType.innerHTML+" Dashboard loaded.\n");
+}
+window.onload = bodyOnLoad();
+
+//Log events
+function logStat(stat){
+  d = new Date();
+  n = d.toLocaleTimeString();
+  logTxt.value +="["+n+"] "+stat;
+}
+
+//Button States
+function btnDisabled(btnB, btnR){
+  btnBrakes.disabled = btnB;
+  btnRes.disabled = btnR;
+}
