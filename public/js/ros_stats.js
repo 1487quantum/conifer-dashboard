@@ -45,8 +45,8 @@ if(wType==0){
 
     //Enable brake buttons
     btnDisabled(false,true);
+    updateNetStat("white","green","5px",'Online');
 
-    stat = 1;
   });
 
   ros.on('error', function(error) {
@@ -56,8 +56,7 @@ if(wType==0){
 
     //Disable all buttons
     btnDisabled(true,true);
-
-    stat = 2;
+    updateNetStat("white","red","5px",'Error');
   });
 
   ros.on('close', function() {
@@ -67,7 +66,7 @@ if(wType==0){
 
     //Disable all buttons
     btnDisabled(true,true);
-    stat = 0;
+    updateNetStat("white","orange","5px",'Offline');
   });
 
   // Subscribers
@@ -180,15 +179,6 @@ function updateNetStat(clr, bg, pad, txt){
   el.style.padding = pad;
   el.innerHTML = txt;
 }
-
-if(stat==0){
-  updateNetStat("white","orange","5px",'Offline');
-}else if(stat==1){
-  updateNetStat("white","green","5px",'Online');
-}else{
-  updateNetStat("white","red","5px",'Error');
-}
-
 
 // Create the main viewer.
 var viewer = new ROS2D.Viewer({
