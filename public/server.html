@@ -53,35 +53,35 @@
     <!-- FIRST ROW OF BLOCKS -->
     <div class="row">
       <div class="col-sm-6">
-      <div class="constyle">
-        <div class="card white">
-          <div class="title">Telemetry</div>
-          <div class="content">
-            <div class="row">
-              <!--Speed-->
-              <div class="col-sm-6 center" id="div-speed">
-                <h2><span id="spd">-</span></h2>
-                <p>Speed (m/s)</p>
-              </div>
-              <!--Goal-->
-              <div class="col-sm-6 center" id="div-goal">
-                <h2><span id="dist">-</span></h2>
-                <p>Distance to goal (m)</p>
-              </div>
+        <div class="constyle">
+          <div class="card white">
+            <div class="title">Telemetry</div>
+            <div class="content">
+              <div class="row">
+                <!--Speed-->
+                <div class="col-sm-6 center" id="div-speed">
+                  <h2><span id="spd">-</span></h2>
+                  <p>Speed (m/s)</p>
+                </div>
+                <!--Goal-->
+                <div class="col-sm-6 center" id="div-goal">
+                  <h2><span id="dist">-</span></h2>
+                  <p>Distance to goal (m)</p>
+                </div>
 
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="constyle" width="100%">
-        <div class="card white">
-          <div class="title">Log</div>
+        <div class="constyle" width="100%">
+          <div class="card white">
+            <div class="title">Log</div>
 
-          <div class="content">
-            <textarea id="consl" width="100%" readonly="true"></textarea>
+            <div class="content">
+              <textarea id="consl" width="100%" readonly="true"></textarea>
+            </div>
           </div>
-      </div>
-      </div>
+        </div>
       </div>
       <!--Camera-->
       <div class="col-sm-6 constyle">
@@ -111,56 +111,76 @@
         </div>
       </div>
 
-<div class="col-sm-4 constyle">
-  <div class="card white">
-    <div class="title">Controls</div>
+      <div class="col-sm-4 constyle">
+        <div class="card white">
+          <div class="title">Routes</div>
 
-    <div class="content">
+          <div class="content">
+            <p>Select your route below:</p>
+            <a id="txtRoute" class='dropdown-button btn black-text white' data-beloworigin="true" href='#' data-activates='dropdown1'>Select route</a>
+            <!-- Dropdown Structure -->
+            <ul id='dropdown1' class='dropdown-content'>
+              <li><a onclick="dropdown(this.innerHTML);">Route 1</a></li>
+              <li><a onclick="dropdown(this.innerHTML);">Route 2</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Coming soon...</a></li>
+            </ul>
+            <a id="btnGo" class='btn white-text orange' onclick="startRoute()">Go!</a>
+          </div>
+        </div>
+      </div>
 
-      <div style="display:inline-block">
-        <button id="btnBrakes" class="waves-effect waves-light btn white-text" type="button" onclick="btnEBrake()" >ESTOP</button>
+      <div class="col-sm-4 constyle">
+        <div class="card white">
+          <div class="title">Controls</div>
+
+          <div class="content">
+            <p>(WARNING: USE WITH CAUTION!)</p>
+
+            <div style="display:inline-block">
+              <button id="btnBrakes" class="waves-effect waves-light btn white-text" type="button" onclick="btnEBrake()" >ESTOP</button>
+            </div>
+            <div  style="display:inline-block">
+              <button id="btnRes" class="waves-effect waves-light btn white-text" type="button" onclick="btnResume()" disabled>Resume</button>
+            </div>
+            <hr/>
+            <button class="waves-effect waves-light btn white-text" type="button" onclick="location.href='/cmd'">Manual Control</button>
+
+          </div>
+        </div>
       </div>
-      <div  style="display:inline-block">
-        <button id="btnRes" class="waves-effect waves-light btn white-text" type="button" onclick="btnResume()" disabled>Resume</button>
-      </div>
-      <hr/>
-      <button class="waves-effect waves-light btn white-text" type="button" onclick="location.href='/cmd'">Manual Control</button>
-      <p>WARNING: USE WITH CAUTION!</p>
     </div>
+    <!-- /row 2 -->
+
   </div>
-</div>
-</div>
-<!-- /row 2 -->
-
-</div>
-<!-- /.container -->
+  <!-- /.container -->
 
 
-<!--Scripts-->
-<script src="js/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-<script src="js/bootstrap.min.js"></script>
+  <!--Scripts-->
+  <script src="js/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="js/bootstrap.min.js"></script>
 
-<!-- ROS Stuff -->
-<script src="js/easeljs.js"></script>
-<script src="js/eventemitter2.min.js"></script>
-<script src="js/roslib.js"></script>
+  <!-- ROS Stuff -->
+  <script src="js/easeljs.js"></script>
+  <script src="js/eventemitter2.min.js"></script>
+  <script src="js/roslib.js"></script>
 
-<!-- Map -->
-<script src="js/ros2d.js"></script>
-<script src="js/nav2d.min.js"></script>
+  <!-- Map -->
+  <script src="js/ros2d.js"></script>
+  <script src="js/nav2d.min.js"></script>
 
 
-<script src="js/ros_stats.js"></script>
-<script src="js/console.js"></script>
+  <script src="js/ros_stats.js"></script>
+  <script src="js/console.js"></script>
 
 
 
 
 
 
-<!-- Materialize Theme -->
-<script src="js/materialize.min.js"></script>
+  <!-- Materialize Theme -->
+  <script src="js/materialize.min.js"></script>
 
 </body>
 </html>
