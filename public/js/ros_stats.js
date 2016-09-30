@@ -104,7 +104,18 @@ if(wType==0){
   });
   tPose.subscribe(function(message) {
     console.log('Robot location, ' + tPose.name + ' (x,y) : %i,%i',message.data.x,message.data.y);
-    vpos.innerHTML = message.data.x;
+    vpos.innerHTML = message.data.x + ", "+message.data.y;
+  });
+
+  //Obstacle Status
+  var tObs = new ROSLIB.Topic({
+    ros : ros,
+    name : '/obstacle',
+    messageType : 'std_msgs/Bool'
+  });
+  tObs.subscribe(function(message) {
+    console.log('Obstacle?' + ' %s',message.data);
+    vobs.innerHTML = message.data;
   });
 
   //Publishers
