@@ -11,9 +11,15 @@ app.get("/", function(request, response){ //root dir
 });
 
 app.get("/cmd", function(request, response){ //control dir
-    response.send("Loading command page...");
-	app.use(express.static(__dirname + "/public/cmd"));
+    response.send("Loading velocity teleop ...");
+    app.use(express.static(__dirname + "/public/cmd"));
 });
+
+app.get("/ros_ctrl", function(request, response){ //control dir
+    response.send("Loading ros control center...");
+    app.use(express.static(__dirname + "/public/ros_ctrl"));
+});
+
 
 app.listen(port, host);
 console.log("Running server at " + host+":"+port);
