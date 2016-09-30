@@ -105,8 +105,11 @@
       <div class="col-sm-8 constyle">
         <div class="card white">
           <div class="title">Map</div>
-          <div class="content center">
-            <div id="navm"></div>
+          <div class="content">
+            <p>Vehicle location (x,y): <span id="pos">0, 0</span></p>
+            <p>Blocked by obstacle? <span id="obs">False</span></p>
+
+            <div id="navm" class="center"></div>
           </div>
         </div>
       </div>
@@ -125,7 +128,7 @@
               <li class="divider"></li>
               <li><a href="#">Coming soon...</a></li>
             </ul>
-            <a id="btnGo" class='btn white-text orange' onclick="startRoute()">Go!</a>
+            <a id="btnGo" class='waves-effect waves-light btn white-text orange' onclick="startRoute()">Go!</a>
           </div>
         </div>
       </div>
@@ -144,8 +147,10 @@
               <button id="btnRes" class="waves-effect waves-light btn white-text" type="button" onclick="btnResume()" disabled>Resume</button>
             </div>
             <hr/>
-            <button class="waves-effect waves-light btn white-text" type="button" onclick="location.href='/cmd'">Manual Control</button>
-
+            <button class="waves-effect waves-light btn white-text" type="button" onclick="location.href='/cmd'">Velocity Teleop</button>
+            <br/>
+            <br/>
+            <button class="waves-effect waves-light btn white-text" type="button" onclick="location.href='/ros_ctrl'">ROS Control Center</button>
           </div>
         </div>
       </div>
