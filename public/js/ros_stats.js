@@ -76,12 +76,18 @@ if(wType==0){
   //Speed
   var tSpd = new ROSLIB.Topic({
     ros : ros,
-    name : '/speed',
-    messageType : 'std_msgs/Float64'
+    name : '/cmd_velF',
+    messageType : 'geometry_msgs/Twist'
   });
   tSpd.subscribe(function(message) {
-    console.log('Received speed ' + tSpd.name + ': %i',message.data);
-    vspd.innerHTML = parseFloat(message.data).toFixed(2);
+    var x = message.linear.x;
+    var y = message.angular.z;
+    var res = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+    if(x<0){
+      res = -res;
+    }
+    console.log('Received speed ' + tSpd.name + ': %f',res);
+    vspd.innerHTML = parseFloat(res).toFixed(2);
     //tSpd.unsubscribe();
   });
 
@@ -103,8 +109,11 @@ if(wType==0){
     messageType : 'geometry_msgs/PoseStamped'
   });
   tPose.subscribe(function(message) {
-    console.log('Robot location, ' + tPose.name + ' (x,y) : %i,%i',message.data.x,message.data.y);
-    vpos.innerHTML = message.data.x + ", "+message.data.y;
+    var x = parseFloat(message.pose.position.x).toFixed(2);
+    var y = parseFloat(message.pose.position.y).toFixed(2);
+
+    console.log('Robot location (x,y):' + x+", "+y);
+    vpos.innerHTML = x + ", "+y
   });
 
   //Obstacle Status
@@ -193,8 +202,22 @@ if(wType==0){
     });
 
     eBrake.publish(msg);
-
   }
+
+  // Create the main viewer.
+  var viewer = new ROS2D.Viewer({
+    divID : 'navm',
+    width : 450,
+    height : 850
+  });
+
+  // Setup the nav client.
+  var nav = NAV2D.OccupancyGridClientNav({
+    ros : ros,
+    rootObject : viewer.scene,
+    viewer : viewer,
+    serverName : '/map'
+  });
 }
 
 function updateNetStat(clr, bg, pad, txt){
@@ -204,27 +227,14 @@ function updateNetStat(clr, bg, pad, txt){
   el.innerHTML = txt;
 }
 
-// Create the main viewer.
-var viewer = new ROS2D.Viewer({
-  divID : 'navm',
-  width : 450,
-  height : 850
-});
 
-// Setup the nav client.
-var nav = NAV2D.OccupancyGridClientNav({
-  ros : ros,
-  rootObject : viewer.scene,
-  viewer : viewer,
-  serverName : '/map'
-});
 
 //var ctx = nv.getContext("2d");
 //ctx.rotate(90*Math.PI/180);
 
 //Run fx when page is loaded
 function bodyOnLoad(){
-logStat(pageType.innerHTML+" Dashboard loaded.\n");
+  logStat(pageType.innerHTML+" Dashboard loaded.\n");
 }
 window.onload = bodyOnLoad();
 
@@ -233,7 +243,7 @@ function logStat(stat){
   d = new Date();
   n = d.toLocaleTimeString();
   logTxt.value +="["+n+"] "+stat;
-logTxt.scrollTop = logTxt.scrollHeight;
+  logTxt.scrollTop = logTxt.scrollHeight;
 }
 
 //Button States
@@ -244,16 +254,16 @@ function btnDisabled(btnB, btnR){
 
 //Update spinner/dropdown box
 function dropdown(val) {
-btnRoute.innerHTML = val;
-logStat("Selected route ->"+val+"\n");
+  btnRoute.innerHTML = val;
+  logStat("Selected route ->"+val+"\n");
 }
 
 function startRoute(){
   var route = btnRoute.innerHTML;
   if(route=="Route 1"){
-      goToRoute(1);
+    goToRoute(1);
   }else if(route=="Route 2"){
-      goToRoute(2);
+    goToRoute(2);
   }
   logStat("Navigating to "+route+"\n");
 
