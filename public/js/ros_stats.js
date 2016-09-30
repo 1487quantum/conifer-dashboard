@@ -72,6 +72,22 @@ if(wType==0){
     updateNetStat("white","orange","5px",'Offline');
   });
 
+  // Create the map main viewer.
+  var viewer = new ROS2D.Viewer({
+    divID : 'navm',
+    width : 450,
+    height : 850
+  });
+
+  // Setup the nav client.
+  var nav = NAV2D.OccupancyGridClientNav({
+    ros : ros,
+    rootObject : viewer.scene,
+    viewer : viewer,
+    serverName : '/map',
+    image: "robot.png"
+  });
+
   // Subscribers
   //Speed
   var tSpd = new ROSLIB.Topic({
@@ -111,9 +127,19 @@ if(wType==0){
   tPose.subscribe(function(message) {
     var x = parseFloat(message.pose.position.x).toFixed(2);
     var y = parseFloat(message.pose.position.y).toFixed(2);
+    var ang = message.pose.orientation;
 
-    console.log('Robot location (x,y):' + x+", "+y);
-    vpos.innerHTML = x + ", "+y
+    // convert a ROS quaternion to theta in degrees
+    // See https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Rotation_matrices
+    // here we use [x y z] = R * [1 0 0]
+    var q0 = ang.w;
+    var q1 = ang.x;
+    var q2 = ang.y;
+    var q3 = ang.z;
+    ang = -Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3)) * 180.0 / Math.PI;
+    ang = parseFloat(ang).toFixed(2);
+    console.log('Robot location (x,y,angle):' + x+", "+y+", "+ang);
+    vpos.innerHTML = x + ", "+y+", "+ang;
   });
 
   //Obstacle Status
@@ -203,22 +229,8 @@ if(wType==0){
 
     eBrake.publish(msg);
   }
-
-  // Create the main viewer.
-  var viewer = new ROS2D.Viewer({
-    divID : 'navm',
-    width : 450,
-    height : 850
-  });
-
-  // Setup the nav client.
-  var nav = NAV2D.OccupancyGridClientNav({
-    ros : ros,
-    rootObject : viewer.scene,
-    viewer : viewer,
-    serverName : '/map'
-  });
 }
+
 
 function updateNetStat(clr, bg, pad, txt){
   el.style.color = clr;
@@ -226,8 +238,6 @@ function updateNetStat(clr, bg, pad, txt){
   el.style.padding = pad;
   el.innerHTML = txt;
 }
-
-
 
 //var ctx = nv.getContext("2d");
 //ctx.rotate(90*Math.PI/180);
