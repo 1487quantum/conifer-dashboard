@@ -1,9 +1,12 @@
 
 //Network stats
 var el = document.getElementById('rosnet');
-//Telemetry
+//Telemetry & Pose
 var vspd = document.getElementById('spd');
 var vgoal = document.getElementById('dist');
+var vpos = document.getElementById('pos');
+var vobs = document.getElementById('obs');
+
 //Dashboard type
 var pageType = document.getElementById('wType');
 
@@ -93,8 +96,18 @@ if(wType==0){
     vgoal.innerHTML = parseFloat(message.data).toFixed(2);
   });
 
-  //Publishers
+  //Robot Pose
+  var tPose = new ROSLIB.Topic({
+    ros : ros,
+    name : '/robot_pose',
+    messageType : 'geometry_msgs/PoseStamped'
+  });
+  tPose.subscribe(function(message) {
+    console.log('Robot location, ' + tPose.name + ' (x,y) : %i,%i',message.data.x,message.data.y);
+    vpos.innerHTML = message.data.x;
+  });
 
+  //Publishers
   //Set route
   function goToRoute(rt){
     var routePub = new ROSLIB.Topic({
