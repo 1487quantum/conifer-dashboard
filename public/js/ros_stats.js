@@ -38,7 +38,7 @@ if(wType==0){
   // Connect to ROS.
   //Connection status
   var ros = new ROSLIB.Ros({
-    url : 'ws://localhost:9090'
+    url : 'ws://192.168.2.100:9090'
   });
 
   ros.on('connection', function() {
@@ -84,8 +84,7 @@ if(wType==0){
     ros : ros,
     rootObject : viewer.scene,
     viewer : viewer,
-    serverName : '/map',
-    image: "robot.png"
+    serverName : '/map'
   });
 
   // Subscribers
@@ -137,7 +136,7 @@ if(wType==0){
     var q2 = ang.y;
     var q3 = ang.z;
     ang = -Math.atan2(2 * (q0 * q3 + q1 * q2), 1 - 2 * (q2 * q2 + q3 * q3)) * 180.0 / Math.PI;
-    ang = parseFloat(ang).toFixed(2);
+    ang=parseFloat(ang).toFixed(2);
     console.log('Robot location (x,y,angle):' + x+", "+y+", "+ang);
     vpos.innerHTML = x + ", "+y+", "+ang;
   });
