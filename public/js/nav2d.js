@@ -126,8 +126,10 @@ NAV2D.Navigator = function(options) {
     goalMarker.x = pose.position.x;
     goalMarker.y = -pose.position.y;
     goalMarker.rotation = stage.rosQuaternionToGlobalTheta(pose.pose.orientation);
-    goalMarker.scaleX = 1.0 / stage.scaleX;
-    goalMarker.scaleY = 1.0 / stage.scaleY;
+    //goalMarker.scaleX = 1.0 / stage.scaleX;
+    //goalMarker.scaleY = 1.0 / stage.scaleY;
+    goalMarker.scaleX = 0.5;
+    goalMarker.scaleY = 0.5;
     that.rootObject.addChild(goalMarker);
 
     goal.on('result', function() {
@@ -167,8 +169,11 @@ NAV2D.Navigator = function(options) {
     robotMarker.x = pose.pose.position.x;
     robotMarker.y = -pose.pose.position.y;
     if (!initScaleSet) {
-      robotMarker.scaleX = 1.0 / stage.scaleX;
-      robotMarker.scaleY = 1.0 / stage.scaleY;
+      //robotMarker.scaleX = 1.0 / stage.scaleX;
+      //robotMarker.scaleY = 1.0 / stage.scaleY;
+      robotMarker.scaleX = 0.025;
+      robotMarker.scaleY = 0.025;
+
       initScaleSet = true;
     }
 
