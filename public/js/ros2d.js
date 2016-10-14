@@ -200,7 +200,7 @@ ROS2D.OccupancyGrid = function(options) {
   createjs.Bitmap.call(this, canvas);
   // change Y direction
   this.y = -this.height * message.info.resolution;
-  
+
   // scale the image
   this.scaleX = message.info.resolution;
   this.scaleY = message.info.resolution;
@@ -356,18 +356,18 @@ ROS2D.ArrowShape = function(options) {
 	var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
 	var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
 	var pulse = options.pulse;
-	
+
 	// draw the arrow
 	var graphics = new createjs.Graphics();
-	
+
 	var headLen = size / 3.0;
 	var headWidth = headLen * 2.0 / 3.0;
-	
+
 	graphics.setStrokeStyle(strokeSize);
 	graphics.beginStroke(strokeColor);
 	graphics.moveTo(0, 0);
 	graphics.lineTo(size-headLen, 0);
-	
+
 	graphics.beginFill(fillColor);
 	graphics.moveTo(size, 0);
 	graphics.lineTo(size-headLen, headWidth / 2.0);
@@ -375,10 +375,10 @@ ROS2D.ArrowShape = function(options) {
 	graphics.closePath();
 	graphics.endFill();
 	graphics.endStroke();
-	
+
 	// create the shape
 	createjs.Shape.call(this, graphics);
-	
+
 	// check if we are pulsing
 	if (pulse) {
 		// have the model "pulse"
@@ -485,9 +485,10 @@ ROS2D.NavigationArrow = function(options) {
   graphics.endFill();
   graphics.endStroke();
 
+
   // create the shape
   createjs.Shape.call(this, graphics);
-  
+
   // check if we are pulsing
   if (pulse) {
     // have the model "pulse"
@@ -507,6 +508,53 @@ ROS2D.NavigationArrow = function(options) {
   }
 };
 ROS2D.NavigationArrow.prototype.__proto__ = createjs.Shape.prototype;
+
+ROS2D.finalTarget = function(options) {
+  var that = this;
+  options = options || {};
+  var size = options.size || 10;
+  var strokeSize = options.strokeSize || 3;
+  var strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
+  var fillColor = options.fillColor || createjs.Graphics.getRGB(255, 0, 0);
+  var pulse = options.pulse;
+
+  // draw the arrow
+  var graphics = new createjs.Graphics();
+
+  graphics.setStrokeStyle(strokeSize);
+  graphics.moveTo(0,0);
+  graphics.beginStroke(strokeColor);
+  graphics.beginFill(fillColor);
+  graphics.lineTo(size, size);
+  graphics.moveTo(size,0);
+  graphics.lineTo(0,size);
+  graphics.closePath();
+  graphics.endFill();
+  graphics.endStroke();
+
+
+  // create the shape
+  createjs.Shape.call(this, graphics);
+
+  // check if we are pulsing
+  if (pulse) {
+    // have the model "pulse"
+    var growCount = 0;
+    var growing = true;
+    createjs.Ticker.addEventListener('tick', function() {
+      if (growing) {
+        that.scaleX *= 1.035;
+        that.scaleY *= 1.035;
+        growing = (++growCount < 10);
+      } else {
+        that.scaleX /= 1.035;
+        that.scaleY /= 1.035;
+        growing = (--growCount < 0);
+      }
+    });
+  }
+};
+ROS2D.finalTarget.prototype.__proto__ = createjs.Shape.prototype;
 
 /**
  * @author Inigo Gonzalez - ingonza85@gmail.com
@@ -593,10 +641,10 @@ ROS2D.PathShape = function(options) {
 	var path = options.path;
 	this.strokeSize = options.strokeSize || 3;
 	this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
-	
+
 	// draw the line
 	this.graphics = new createjs.Graphics();
-	
+
 	if (path !== null && typeof path !== 'undefined') {
 		this.graphics.setStrokeStyle(this.strokeSize);
 		this.graphics.beginStroke(this.strokeColor);
@@ -606,7 +654,7 @@ ROS2D.PathShape = function(options) {
 		}
 		this.graphics.endStroke();
 	}
-	
+
 	// create the shape
 	createjs.Shape.call(this, this.graphics);
 };
@@ -659,20 +707,20 @@ ROS2D.PolygonMarker = function(options) {
 	this.fillColor = options.pointColor || createjs.Graphics.getRGB(0, 255, 0, 0.33);
 	this.lineCallBack = options.lineCallBack;
 	this.pointCallBack = options.pointCallBack;
-	
+
 	// Array of point shapes
 //	this.points = [];
 	this.pointContainer = new createjs.Container();
-	
+
 	// Array of line shapes
 //	this.lines = [];
 	this.lineContainer = new createjs.Container();
-	
+
 	this.fillShape = new createjs.Shape();
-	
+
 	// Container with all the lines and points
 	createjs.Container.call(this);
-	
+
 	this.addChild(this.fillShape);
 	this.addChild(this.lineContainer);
 	this.addChild(this.pointContainer);
@@ -688,14 +736,14 @@ ROS2D.PolygonMarker.prototype.createLineShape = function(startPoint, endPoint) {
 //	line.graphics.moveTo(startPoint.x, startPoint.y);
 //	line.graphics.lineTo(endPoint.x, endPoint.y);
 	this.editLineShape(line, startPoint, endPoint);
-	
+
 	var that = this;
 	line.addEventListener('mousedown', function(event) {
 		if (that.lineCallBack !== null && typeof that.lineCallBack !== 'undefined') {
 			that.lineCallBack('mousedown', event, that.lineContainer.getChildIndex(event.target));
 		}
 	});
-	
+
 	return line;
 };
 
@@ -719,14 +767,14 @@ ROS2D.PolygonMarker.prototype.createPointShape = function(pos) {
 	point.graphics.drawCircle(0, 0, this.pointSize);
 	point.x = pos.x;
 	point.y = -pos.y;
-	
+
 	var that = this;
 	point.addEventListener('mousedown', function(event) {
 		if (that.pointCallBack !== null && typeof that.pointCallBack !== 'undefined') {
 			that.pointCallBack('mousedown', event, that.pointContainer.getChildIndex(event.target));
 		}
 	});
-	
+
 	return point;
 };
 
@@ -739,13 +787,13 @@ ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChild(point);
 	var numPoints = this.pointContainer.getNumChildren();
-	
+
 	// 0 points -> 1 point, 0 lines
 	// 1 point  -> 2 points, lines: add line between previous and new point, add line between new point and first point
 	// 2 points -> 3 points, 3 lines: change last line, add line between new point and first point
 	// 3 points -> 4 points, 4 lines: change last line, add line between new point and first point
 	// etc
-	
+
 	if (numPoints < 2) {
 		// Now 1 point
 	}
@@ -763,7 +811,7 @@ ROS2D.PolygonMarker.prototype.addPoint = function(pos) {
 		var lineEnd = this.createLineShape(point, this.pointContainer.getChildAt(0));
 		this.lineContainer.addChild(lineEnd);
 	}
-	
+
 	this.drawFill();
 };
 
@@ -783,18 +831,18 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 		index = obj;
 //		point = this.pointContainer.getChildAt(index);
 	}
-	
+
 	// 0 points -> 0 points, 0 lines
 	// 1 point  -> 0 points, 0 lines
 	// 2 points -> 1 point,  0 lines: remove all lines
 	// 3 points -> 2 points, 2 lines: change line before point to remove, remove line after point to remove
 	// 4 points -> 3 points, 3 lines: change line before point to remove, remove line after point to remove
 	// etc
-	
+
 	var numPoints = this.pointContainer.getNumChildren();
-	
+
 	if (numPoints < 2) {
-		
+
 	}
 	else if (numPoints < 3) {
 		// 2 points: remove all lines
@@ -811,7 +859,7 @@ ROS2D.PolygonMarker.prototype.remPoint = function(obj) {
 	}
 	this.pointContainer.removeChildAt(index);
 //	this.points.splice(index, 1);
-	
+
 	this.drawFill();
 };
 
@@ -834,18 +882,18 @@ ROS2D.PolygonMarker.prototype.movePoint = function(obj, newPos) {
 	}
 	point.x = newPos.x;
 	point.y = -newPos.y;
-	
+
 	var numPoints = this.pointContainer.getNumChildren();
 	if (numPoints > 1) {
 		// line before moved point
 		var line1 = this.lineContainer.getChildAt((index-1+numPoints)%numPoints);
 		this.editLineShape(line1, this.pointContainer.getChildAt((index-1+numPoints)%numPoints), point);
-		
+
 		// line after moved point
 		var line2 = this.lineContainer.getChildAt(index);
 		this.editLineShape(line2, point, this.pointContainer.getChildAt((index+1)%numPoints));
 	}
-	
+
 	this.drawFill();
 };
 
@@ -873,19 +921,19 @@ ROS2D.PolygonMarker.prototype.splitLine = function(obj) {
 	var xh = (xs+xe)/2.0;
 	var yh = (ys+ye)/2.0;
 	var pos = new ROSLIB.Vector3({ x:xh, y:-yh });
-	
+
 	// Add a point in the center of the line to split
 	var point = this.createPointShape(pos);
 	this.pointContainer.addChildAt(point, index+1);
 	++numPoints;
-	
+
 	// Add a line between the new point and the end of the line to split
 	var lineNew = this.createLineShape(point, this.pointContainer.getChildAt((index+2)%numPoints));
 	this.lineContainer.addChildAt(lineNew, index+1);
 
 	// Set the endpoint of the line to split to the new point
 	this.editLineShape(line, this.pointContainer.getChildAt(index), point);
-	
+
 	this.drawFill();
 };
 
@@ -939,24 +987,24 @@ ROS2D.TraceShape = function(options) {
 	this.strokeColor = options.strokeColor || createjs.Graphics.getRGB(0, 0, 0);
 	this.maxPoses = options.maxPoses || 100;
 	this.minDist = options.minDist || 0.05;
-	
+
 	// Store minDist as the square of it
 	this.minDist = this.minDist*this.minDist;
-	
+
 	// Array of the poses
 	// TODO: do we need this?
 	this.poses = [];
-	
+
 	// Create the graphics
 	this.graphics = new createjs.Graphics();
 	this.graphics.setStrokeStyle(this.strokeSize);
 	this.graphics.beginStroke(this.strokeColor);
-	
+
 	// Add first pose if given
 	if (pose !== null && typeof pose !== 'undefined') {
 		this.poses.push(pose);
 	}
-	
+
 	// Create the shape
 	createjs.Shape.call(this, this.graphics);
 };
@@ -1020,7 +1068,7 @@ ROS2D.TraceShape.prototype.__proto__ = createjs.Shape.prototype;
 ROS2D.PanView = function(options) {
 	options = options || {};
 	this.rootObject = options.rootObject;
-	
+
 	// get a handle to the stage
 	if (this.rootObject instanceof createjs.Stage) {
 		this.stage = this.rootObject;
@@ -1028,7 +1076,7 @@ ROS2D.PanView = function(options) {
 	else {
 		this.stage = this.rootObject.getStage();
 	}
-	
+
 	this.startPos = new ROSLIB.Vector3();
 };
 
@@ -1106,7 +1154,7 @@ ROS2D.Viewer.prototype.scaleToDimensions = function(width, height) {
   // restore to values before shifting, if ocurred
   this.scene.x = typeof this.scene.x_prev_shit !== 'undefined' ? this.scene.x_prev_shit : this.scene.x;
   this.scene.y = typeof this.scene.y_prev_shift !== 'undefined' ? this.scene.y_prev_shift : this.scene.y;
-  
+
   // save scene scaling
   this.scene.scaleX = this.width / width;
   this.scene.scaleY = this.height / height;
@@ -1145,7 +1193,7 @@ ROS2D.ZoomView = function(options) {
 	options = options || {};
 	this.rootObject = options.rootObject;
 	this.minScale = options.minScale || 0.001;
-	
+
 	// get a handle to the stage
 	if (this.rootObject instanceof createjs.Stage) {
 		this.stage = this.rootObject;
@@ -1153,7 +1201,7 @@ ROS2D.ZoomView = function(options) {
 	else {
 		this.stage = this.rootObject.getStage();
 	}
-	
+
 	this.center = new ROSLIB.Vector3();
 	this.startShift = new ROSLIB.Vector3();
 	this.startScale = new ROSLIB.Vector3();
@@ -1177,10 +1225,10 @@ ROS2D.ZoomView.prototype.zoom = function(zoom) {
 	if (this.startScale.y*zoom < this.minScale) {
 		zoom = this.minScale/this.startScale.y;
 	}
-	
+
 	this.stage.scaleX = this.startScale.x*zoom;
 	this.stage.scaleY = this.startScale.y*zoom;
-	
+
 	this.stage.x = this.startShift.x - (this.center.x-this.startShift.x) * (this.stage.scaleX/this.startScale.x - 1);
 	this.stage.y = this.startShift.y - (this.center.y-this.startShift.y) * (this.stage.scaleY/this.startScale.y - 1);
 };
