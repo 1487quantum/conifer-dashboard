@@ -75,19 +75,63 @@ if(wType==0){
   // Create the map main viewer.
   var viewer = new ROS2D.Viewer({
     divID : 'navm',
-    width : 450,
-    height : 850
+    width : (document.getElementById('navm').clientWidth)/1.0,
+    height : 800
   });
+
 
   // Setup the nav client.
   var nav = NAV2D.OccupancyGridClientNav({
     ros : ros,
     rootObject : viewer.scene,
     viewer : viewer,
-    serverName : '/map'
+    serverName : '/move_base',
+    withOrientation : true
   });
 
+  var path = new ROS2D.PathShape({
+    strokeSize : 0.1 ,
+    strokeColor: "#16e01d"
+  });
+
+  var goalMarker = new ROS2D.finalTarget({
+    size: 1.0,
+    strokeSize: 0.25,
+    strokeColor: "#ed0707",
+    pulse: false
+  });
+
+
+  function initMap() {
+    var j = document.getElementById("navm");
+    viewer.scaleToDimensions(1,1);
+    viewer.addObject(path);
+    viewer.addObject(goalMarker);
+    // j.style.transform= "scale(1.3,0.5) rotate(270deg)";
+  }
+
   // Subscribers
+  //Path
+  var tPath = new ROSLIB.Topic({
+    ros : ros,
+    name : '/move_base/TebLocalPlannerROS/global_plan',
+    messageType : 'nav_msgs/Path'
+  });
+  tPath.subscribe(function(message) {
+    path.setPath(message);
+  });
+
+// finalGoal marker
+  var finalGoalPose = new ROSLIB.Topic({
+    ros : ros,
+    name : '/finalGoal',
+    messageType : 'geometry_msgs/PoseStamped'
+  });
+  finalGoalPose.subscribe(function(message) {
+    goalMarker.x = message.pose.position.x-0.5;
+    goalMarker.y = -message.pose.position.y+0.5;
+  });
+
   //Speed
   var tSpd = new ROSLIB.Topic({
     ros : ros,
@@ -165,6 +209,7 @@ if(wType==0){
       data: rt
     });
     routePub.publish(routeNum);
+
   }
 
   //Emergency Brake
@@ -244,6 +289,7 @@ function updateNetStat(clr, bg, pad, txt){
 //Run fx when page is loaded
 function bodyOnLoad(){
   logStat(pageType.innerHTML+" Dashboard loaded.\n");
+  initMap();
 }
 window.onload = bodyOnLoad();
 
