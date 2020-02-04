@@ -10,9 +10,9 @@ Ensure that the ROS Stack is installed
 #### rosbridge_suite
 Server Implementations of the rosbridge: [rosbridge_suite](https://github.com/RobotWebTools/rosbridge_suite)
 
-Git clone the repository into the active ROS workspace. (E.g. catkin_ws)
+Install the package via apt:
 ```
-$ git clone https://github.com/RobotWebTools/rosbridge_suite.
+$ sudo apt install  sudo apt install ros-melodic-rosbridge-suite 
 ```
 
 ### nodejs 
