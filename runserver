@@ -1,9 +1,13 @@
 #!/bin/bash
 # Start server script
 echo "Starting ROSbridge"
-#gnome-terminal -x roslaunch rosbridge_server rosbridge_websocket.launch
-sleep 2 #Give rosbridge 2s to start
-echo "Starting Web Server"
-gnome-terminal -x node web_server.js
-echo "Opening Browser"
-python -m webbrowser "http://127.0.0.1:1337"
+#Try gnome-terminal, else open with xterm
+
+ xterm -e roslaunch rosbridge_server rosbridge_websocket.launch&xterm -e node web_server.js&python -m webbrowser "http://127.0.0.1:8080"
+
+#gnome-terminal -x roslaunch rosbridge_server rosbridge_websocket.launch || xterm -e roslaunch rosbridge_server rosbridge_websocket.launch
+#sleep 2 #Give rosbridge 2s to start
+#echo "Starting Web Server"
+#gnome-terminal -x node web_server.js || xterm -e node web_server.js
+#echo "Opening Browser"
+#python -m webbrowser "http://127.0.0.1:8080"

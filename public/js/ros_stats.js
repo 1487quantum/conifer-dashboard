@@ -33,22 +33,21 @@ if(pageType.innerHTML=="Client"){
   wType=0;
 }
 
-//Server mode
-if(wType==0){
   // Connect to ROS.
   //Connection status
   var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.2.100:9090'
+    url : 'ws://localhost:9090'
   });
 
   ros.on('connection', function() {
     cStats = 'Connected to websocket server.\n'
     console.log(cStats);
     logStat(cStats);
+    updateNetStat("white","green","5px",'Online');
 
     //Enable brake buttons
     btnDisabled(false,true);
-    updateNetStat("white","green","5px",'Online');
+
 
   });
 
@@ -56,20 +55,22 @@ if(wType==0){
     cStats='Error connecting to websocket server.\n';
     console.log(cStats,error);
     logStat(cStats);
+    updateNetStat("white","red","5px",'Error');
 
     //Disable all buttons
     btnDisabled(true,true);
-    updateNetStat("white","red","5px",'Error');
+
   });
 
   ros.on('close', function() {
     cStats='Connection to websocket server closed.\n';
     console.log(cStats);
     logStat(cStats);
+    updateNetStat("white","orange","5px",'Offline');
 
     //Disable all buttons
     btnDisabled(true,true);
-    updateNetStat("white","orange","5px",'Offline');
+
   });
 
   // Create the map main viewer.
@@ -273,7 +274,7 @@ if(wType==0){
 
     eBrake.publish(msg);
   }
-}
+
 
 
 function updateNetStat(clr, bg, pad, txt){
