@@ -5,7 +5,7 @@ A web-based dashboard for the autonomous vehicle via rosbridge_suite & nodejs.
 Ensure that the following is installed before running the dashboard:
 ### ROS
 #### Main Stack
-Ensure that the ROS Stack is installed
+Ensure that the ROS Stack is installed, tutorial on ROS installation could be found [here](https://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment).
 
 #### rosbridge_suite
 Server Implementations of the rosbridge: [rosbridge_suite](https://github.com/RobotWebTools/rosbridge_suite)
